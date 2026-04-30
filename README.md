@@ -46,6 +46,10 @@ After all trials complete, `jsPsych.getSessionRecording()` is called in the `on_
 
 The recording is also stored at `window._sessionRecording` for inspection in the browser console.
 
-## Vendor files
+## Source
 
-The `vendor/` directory contains pre-built browser bundles of jsPsych core and the required plugins, compiled from the `claude/add-hifi-data-recording-jfxSP` feature branch (the branch backing PR #3661). These files are committed so the demo works without an internet connection or build step.
+All jsPsych files are loaded via [jsDelivr](https://www.jsdelivr.com/) pointing to the `preview/pr-3661` branch of the jsPsych repository, which contains the pre-built dist files for the recording feature:
+
+```
+https://cdn.jsdelivr.net/gh/jspsych/jsPsych@3aa66f74be8247ecd742e51d25aee59cf6323be9/packages/...
+```
