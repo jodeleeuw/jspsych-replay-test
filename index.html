@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>jsPsych Replay Test Demo</title>
+
+  <!-- jsPsych core + plugins via jsDelivr (preview/pr-3661 branch — includes record_session feature) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@3aa66f74be8247ecd742e51d25aee59cf6323be9/packages/jspsych/css/jspsych.css" />
+  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@3aa66f74be8247ecd742e51d25aee59cf6323be9/packages/jspsych/dist/index.browser.min.js"></script>
+
+  <!-- Plugins -->
+  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@3aa66f74be8247ecd742e51d25aee59cf6323be9/packages/plugin-instructions/dist/index.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@3aa66f74be8247ecd742e51d25aee59cf6323be9/packages/plugin-html-keyboard-response/dist/index.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@3aa66f74be8247ecd742e51d25aee59cf6323be9/packages/plugin-html-button-response/dist/index.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@3aa66f74be8247ecd742e51d25aee59cf6323be9/packages/plugin-html-slider-response/dist/index.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@3aa66f74be8247ecd742e51d25aee59cf6323be9/packages/plugin-canvas-keyboard-response/dist/index.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@3aa66f74be8247ecd742e51d25aee59cf6323be9/packages/plugin-sketchpad/dist/index.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@3aa66f74be8247ecd742e51d25aee59cf6323be9/packages/plugin-free-sort/dist/index.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@3aa66f74be8247ecd742e51d25aee59cf6323be9/packages/plugin-survey-text/dist/index.browser.min.js"></script>
+
+  <style>
+    /* Recording display overlay */
+    #recording-container {
+      font-family: monospace;
+      background: #1e1e2e;
+      color: #cdd6f4;
+      padding: 1.5rem;
+      border-radius: 8px;
+      max-width: 900px;
+      margin: 1rem auto;
+    }
+    #recording-container h2 {
+      color: #cba6f7;
+      margin-top: 0;
+    }
+    #recording-summary {
+      background: #313244;
+      padding: 1rem;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+    }
+    #recording-summary table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    #recording-summary td {
+      padding: 0.25rem 0.75rem;
+      border-bottom: 1px solid #45475a;
+    }
+    #recording-summary td:first-child {
+      color: #89b4fa;
+      white-space: nowrap;
+    }
+    #recording-json-wrapper {
+      background: #181825;
+      border-radius: 6px;
+      overflow: auto;
+      max-height: 400px;
+      padding: 1rem;
+    }
+    #recording-json {
+      margin: 0;
+      font-size: 0.8rem;
+      white-space: pre;
+    }
+    .copy-btn {
+      display: inline-block;
+      margin-top: 0.75rem;
+      padding: 0.4rem 1rem;
+      background: #89b4fa;
+      color: #1e1e2e;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .copy-btn:hover { background: #b4befe; }
+
+    /* Stroop stimulus helper */
+    .stroop-word {
+      font-size: 3rem;
+      font-weight: bold;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    /* Free-sort SVG item colours */
+    .fsort-label {
+      text-align: center;
+      font-size: 0.7rem;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+<script>
+// ============================================================
+// Helper: tiny colored-square data URIs for free-sort stimuli
+// ============================================================
+function colorSquareSvg(color, label) {
+  const encoded = encodeURIComponent(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80">` +
+    `<rect width="80" height="80" rx="8" fill="${color}"/>` +
+    `<text x="40" y="50" text-anchor="middle" fill="white" font-size="14" font-family="sans-serif">${label}</text>` +
+    `</svg>`
+  );
+  return "data:image/svg+xml," + encoded;
+}
+
+const freeSortStimuli = [
+  colorSquareSvg("#e74c3c", "Red"),
+  colorSquareSvg("#2ecc71", "Green"),
+  colorSquareSvg("#3498db", "Blue"),
+  colorSquareSvg("#f39c12", "Yellow"),
+  colorSquareSvg("#9b59b6", "Purple"),
+  colorSquareSvg("#1abc9c", "Teal"),
+];
+
+// ============================================================
+// Initialize jsPsych with record_session: true
+// ============================================================
+const jsPsych = initJsPsych({
+  record_session: true,
+  on_finish: function() {
+    showRecording();
+  }
+});
+
+// ============================================================
+// TRIAL 1 – Instructions (button navigation → mouse.click)
+// ============================================================
+const instructions = {
+  type: jsPsychInstructions,
+  pages: [
+    `<h2>Welcome to the jsPsych Replay Demo</h2>
+     <p>This experiment tests a variety of input types so that the
+     session recording feature can be validated against different
+     plugin interactions.</p>
+     <p>Use the <strong>Next</strong> and <strong>Previous</strong>
+     buttons to navigate through these instructions.</p>`,
+
+    `<h2>What you will do</h2>
+     <ol style="text-align:left;max-width:480px;margin:auto">
+       <li>Press a key in response to a fixation cross</li>
+       <li>Identify the ink colour of a word (Stroop task)</li>
+       <li>Answer a multiple-choice question using buttons</li>
+       <li>Rate your confidence using a slider</li>
+       <li>React to a canvas-drawn shape</li>
+       <li>Draw freely on a sketchpad</li>
+       <li>Drag and drop coloured tiles to organise them</li>
+       <li>Type answers to short text questions</li>
+     </ol>`,
+
+    `<h2>Ready?</h2>
+     <p>Press <strong>Start</strong> when you are ready to begin.</p>`,
+  ],
+  show_clickable_nav: true,
+  button_label_next: "Next",
+  button_label_previous: "Previous",
+};
+
+// ============================================================
+// TRIAL 2 – Fixation cross (keyboard → key.down / key.up)
+// ============================================================
+const fixation = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: `<div style="font-size:3rem;font-weight:bold;text-align:center">+</div>
+             <p style="text-align:center;color:#888">Press <kbd>Space</kbd> to continue</p>`,
+  choices: [" "],
+};
+
+// ============================================================
+// TRIAL 3 – Stroop colour-naming task (keyboard)
+// ============================================================
+const stroopTrials = [
+  { word: "RED",   color: "blue",  correct: "b" },
+  { word: "GREEN", color: "red",   correct: "r" },
+  { word: "BLUE",  color: "green", correct: "g" },
+].map(item => ({
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: `<p class="stroop-word" style="color:${item.color}">${item.word}</p>
+             <p style="text-align:center;color:#888">Press <kbd>R</kbd> = red &nbsp;
+             <kbd>G</kbd> = green &nbsp; <kbd>B</kbd> = blue</p>`,
+  choices: ["r", "g", "b"],
+  data: { correct_response: item.correct },
+  on_finish: function(data) {
+    data.correct = data.response === data.correct_response;
+  },
+}));
+
+// ============================================================
+// TRIAL 4 – Multiple-choice question (mouse clicks on buttons)
+// ============================================================
+const buttonChoice = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `<h3 style="text-align:center">Which best describes how you are feeling right now?</h3>`,
+  choices: ["😊 Happy", "😐 Neutral", "😞 Sad", "😤 Frustrated", "😴 Tired"],
+  button_html: (choice) =>
+    `<button class="jspsych-btn" style="font-size:1.1rem;padding:0.5rem 1.2rem;margin:0.25rem">${choice}</button>`,
+};
+
+// ============================================================
+// TRIAL 5 – Slider confidence rating (slider drag)
+// ============================================================
+const sliderRating = {
+  type: jsPsychHtmlSliderResponse,
+  stimulus: `<p style="text-align:center;font-size:1.2rem">
+               How confident are you in your Stroop answers?
+             </p>`,
+  min: 0,
+  max: 100,
+  start: 50,
+  step: 1,
+  labels: ["Not at all confident", "Somewhat", "Very confident"],
+  require_movement: true,
+  prompt: `<p style="text-align:center;color:#888;font-size:0.9rem">
+             Drag the slider, then click Continue.
+           </p>`,
+};
+
+// ============================================================
+// TRIAL 6 – Canvas drawing stimulus (canvas + keyboard)
+// ============================================================
+const canvasTrial = {
+  type: jsPsychCanvasKeyboardResponse,
+  canvas_size: [300, 400],
+  stimulus: function(canvas) {
+    const ctx = canvas.getContext("2d");
+
+    // Background gradient
+    const grad = ctx.createLinearGradient(0, 0, 400, 0);
+    grad.addColorStop(0, "#667eea");
+    grad.addColorStop(1, "#764ba2");
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 400, 300);
+
+    // Outer circle
+    ctx.beginPath();
+    ctx.arc(200, 130, 80, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(255,255,255,0.3)";
+    ctx.fill();
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = "white";
+    ctx.stroke();
+
+    // Inner circle
+    ctx.beginPath();
+    ctx.arc(200, 130, 40, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(255,255,255,0.8)";
+    ctx.fill();
+
+    // Label
+    ctx.fillStyle = "white";
+    ctx.font = "bold 18px sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText("Press F or J", 200, 240);
+    ctx.font = "14px sans-serif";
+    ctx.fillText("F = left circle   J = right", 200, 265);
+  },
+  choices: ["f", "j"],
+  prompt: `<p style="text-align:center;color:#888;margin-top:0.5rem">
+             Press <kbd>F</kbd> if the target is on the left, <kbd>J</kbd> if on the right.
+           </p>`,
+};
+
+// ============================================================
+// TRIAL 7 – Sketchpad (mouse draw → mouse.move / mouse.down / mouse.up)
+// ============================================================
+const sketchpad = {
+  type: jsPsychSketchpad,
+  canvas_width: 400,
+  canvas_height: 300,
+  canvas_border_width: 2,
+  canvas_border_color: "#aaa",
+  background_color: "#fefefe",
+  stroke_width: 4,
+  stroke_color: "#2c3e50",
+  show_finished_button: true,
+  finished_button_label: "Done drawing",
+  prompt: `<p style="text-align:center">Draw anything you like in the space above,
+           then click <strong>Done drawing</strong>.</p>`,
+};
+
+// ============================================================
+// TRIAL 8 – Free sort (drag-and-drop → mouse events)
+// ============================================================
+const freeSort = {
+  type: jsPsychFreeSort,
+  stimuli: freeSortStimuli,
+  stim_height: 80,
+  stim_width: 80,
+  sort_area_height: 400,
+  sort_area_width: 600,
+  sort_area_shape: "square",
+  prompt: `<p style="text-align:center">
+             Drag the coloured tiles into the sorting area and arrange them
+             however you like, then click <strong>Continue</strong>.
+           </p>`,
+  prompt_location: "above",
+};
+
+// ============================================================
+// TRIAL 9 – Survey text (keyboard text input + clipboard)
+// ============================================================
+const surveyText = {
+  type: jsPsychSurveyText,
+  questions: [
+    {
+      prompt: "What is your first name? (you may use a pseudonym)",
+      placeholder: "e.g. Alex",
+      name: "name",
+      required: true,
+    },
+    {
+      prompt: "How old are you?",
+      placeholder: "e.g. 25",
+      name: "age",
+      required: true,
+    },
+    {
+      prompt: "In one sentence, what did you think of this demo?",
+      placeholder: "Type your thoughts here…",
+      name: "feedback",
+      rows: 3,
+      columns: 50,
+    },
+  ],
+  preamble: `<p style="text-align:center;font-size:1.1rem">Please answer the questions below.</p>`,
+  button_label: "Submit",
+};
+
+// ============================================================
+// Build and run the timeline
+// ============================================================
+const timeline = [
+  instructions,
+  fixation,
+  ...stroopTrials,
+  buttonChoice,
+  sliderRating,
+  canvasTrial,
+  sketchpad,
+  freeSort,
+  surveyText,
+];
+
+jsPsych.run(timeline);
+
+// ============================================================
+// Show the session recording when the experiment ends
+// ============================================================
+function showRecording() {
+  const recording = typeof jsPsych.getSessionRecording === "function"
+    ? jsPsych.getSessionRecording()
+    : null;
+
+  if (!recording) {
+    document.body.innerHTML =
+      `<div style="text-align:center;padding:2rem;font-family:sans-serif">
+         <h2>Experiment complete!</h2>
+         <p><em>Session recording is not available in this build of jsPsych.</em></p>
+         <p>Make sure you are running jsPsych from the
+         <code>record_session</code> feature branch (PR&nbsp;#3661).</p>
+       </div>`;
+    return;
+  }
+
+  // Build a human-readable summary of what was captured
+  const totalEvents = recording.trials.reduce((n, t) => n + t.events.length, 0);
+  const eventCounts = {};
+  for (const trial of recording.trials) {
+    for (const ev of trial.events) {
+      const key = ev.type;
+      eventCounts[key] = (eventCounts[key] || 0) + 1;
+    }
+  }
+  const eventRows = Object.entries(eventCounts)
+    .sort((a, b) => b[1] - a[1])
+    .map(([k, v]) => `<tr><td>${k}</td><td>${v}</td></tr>`)
+    .join("");
+
+  document.body.innerHTML = `
+    <div id="recording-container">
+      <h2>✅ Session Recording Complete</h2>
+
+      <div id="recording-summary">
+        <table>
+          <tr><td>jsPsych version</td><td>${recording.jspsych_version}</td></tr>
+          <tr><td>Schema version</td><td>${recording.schema_version}</td></tr>
+          <tr><td>End reason</td><td>${recording.end_reason ?? '<em style="color:#6c7086">null — retrieved during on_finish, before stop()</em>'}</td></tr>
+          <tr><td>Trials recorded</td><td>${recording.trials.length}</td></tr>
+          <tr><td>Total events</td><td>${totalEvents}</td></tr>
+          <tr><td>RNG calls</td><td>${recording.rng_calls.length}</td></tr>
+          <tr><td>Viewport changes</td><td>${recording.viewport_changes.length}</td></tr>
+          <tr><td>Display element</td><td>${recording.display_element_id}</td></tr>
+          <tr><td>User agent</td><td style="font-size:0.75rem;word-break:break-all">${recording.user_agent}</td></tr>
+        </table>
+      </div>
+
+      <h3 style="color:#a6e3a1;margin:0 0 0.5rem">Event types captured</h3>
+      <div id="recording-summary" style="margin-bottom:1rem">
+        <table>
+          <tr><td style="color:#89b4fa"><strong>Event type</strong></td><td><strong>Count</strong></td></tr>
+          ${eventRows || "<tr><td colspan='2'>No events recorded</td></tr>"}
+        </table>
+      </div>
+
+      <h3 style="color:#a6e3a1;margin:0 0 0.5rem">Full JSON recording</h3>
+      <div id="recording-json-wrapper">
+        <pre id="recording-json">${escapeHtml(JSON.stringify(recording, null, 2))}</pre>
+      </div>
+
+      <button class="copy-btn" onclick="copyRecording()">📋 Copy JSON to clipboard</button>
+      <p style="color:#6c7086;font-size:0.8rem;margin-top:0.5rem">
+        This JSON can be used to replay the session. Save it alongside your trial data.
+      </p>
+    </div>
+  `;
+
+  // Store recording on window for console inspection
+  window._sessionRecording = recording;
+  console.log("[jsPsych replay demo] Recording available at window._sessionRecording");
+  console.log("[jsPsych replay demo] JSON size:", JSON.stringify(recording).length, "bytes");
+}
+
+function escapeHtml(str) {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function copyRecording() {
+  const json = JSON.stringify(window._sessionRecording, null, 2);
+  navigator.clipboard.writeText(json).then(
+    () => alert("Recording copied to clipboard!"),
+    () => {
+      // fallback
+      const ta = document.createElement("textarea");
+      ta.value = json;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+      alert("Recording copied to clipboard (fallback)!");
+    }
+  );
+}
+</script>
+</body>
+</html>
