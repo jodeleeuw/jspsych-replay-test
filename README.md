@@ -15,6 +15,16 @@ python3 -m http.server 8080
 # then open http://localhost:8080
 ```
 
+## Deploying to GitHub Pages
+
+This repository includes a GitHub Actions workflow at `.github/workflows/deploy-pages.yml` that deploys the site on every push to `main`.
+
+To enable deployment:
+
+1. Go to **Settings → Pages** in the repository.
+2. Set **Source** to **GitHub Actions**.
+3. Push to `main` (or run the workflow manually from the **Actions** tab).
+
 ## Plugins included
 
 | Trial | Plugin | Input type captured |
