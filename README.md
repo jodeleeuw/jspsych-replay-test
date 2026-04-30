@@ -2,6 +2,8 @@
 
 Demo experiment for testing the [session recording / replay feature](https://github.com/jspsych/jsPsych/pull/3661) added to jsPsych v8.
 
+Live demo: https://jodeleeuw.github.io/jspsych-replay-test/
+
 ## What is this?
 
 This repository contains a self-contained demo experiment (`index.html`) that exercises a wide variety of jsPsych plugins and input types. Its purpose is to validate that the `record_session: true` feature captures all the events needed to reconstruct a session visually.
