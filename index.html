@@ -411,7 +411,7 @@ function showRecording() {
         <pre id="recording-json">${escapeHtml(JSON.stringify(recording, null, 2))}</pre>
       </div>
 
-      <button class="copy-btn" onclick="copyRecording()">📋 Copy JSON to clipboard</button>
+      <button class="copy-btn" onclick="downloadRecording()">Download JSON</button>
       <p style="color:#6c7086;font-size:0.8rem;margin-top:0.5rem">
         This JSON can be used to replay the session. Save it alongside your trial data.
       </p>
@@ -431,21 +431,18 @@ function escapeHtml(str) {
     .replace(/>/g, "&gt;");
 }
 
-function copyRecording() {
+function downloadRecording() {
   const json = JSON.stringify(window._sessionRecording, null, 2);
-  navigator.clipboard.writeText(json).then(
-    () => alert("Recording copied to clipboard!"),
-    () => {
-      // fallback
-      const ta = document.createElement("textarea");
-      ta.value = json;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand("copy");
-      document.body.removeChild(ta);
-      alert("Recording copied to clipboard (fallback)!");
-    }
-  );
+  const blob = new Blob([json], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `jspsych-session-recording-${timestamp}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }
 </script>
 </body>
