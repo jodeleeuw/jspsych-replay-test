@@ -18,6 +18,7 @@
   <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@959a2c7ae27005af5da411148958c0c0cd70e2b5/packages/plugin-sketchpad/dist/index.browser.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@959a2c7ae27005af5da411148958c0c0cd70e2b5/packages/plugin-free-sort/dist/index.browser.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@959a2c7ae27005af5da411148958c0c0cd70e2b5/packages/plugin-survey-text/dist/index.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@959a2c7ae27005af5da411148958c0c0cd70e2b5/packages/plugin-fullscreen/dist/index.browser.min.js"></script>
 
   <style>
     /* Recording display overlay */
@@ -158,6 +159,16 @@ const instructions = {
   show_clickable_nav: true,
   button_label_next: "Next",
   button_label_previous: "Previous",
+};
+
+// ============================================================
+// TRIAL 1b – Enter fullscreen (fullscreenchange event)
+// ============================================================
+const enterFullscreen = {
+  type: jsPsychFullscreen,
+  fullscreen_mode: true,
+  message: `<p>The experiment will switch to fullscreen mode when you press the button.</p>`,
+  button_label: "Enter fullscreen",
 };
 
 // ============================================================
@@ -331,10 +342,19 @@ const surveyText = {
 };
 
 // ============================================================
+// TRIAL 10 – Exit fullscreen (fullscreenchange event)
+// ============================================================
+const exitFullscreen = {
+  type: jsPsychFullscreen,
+  fullscreen_mode: false,
+};
+
+// ============================================================
 // Build and run the timeline
 // ============================================================
 const timeline = [
   instructions,
+  enterFullscreen,
   fixation,
   ...stroopTrials,
   buttonChoice,
@@ -343,6 +363,7 @@ const timeline = [
   sketchpad,
   freeSort,
   surveyText,
+  exitFullscreen,
 ];
 
 jsPsych.run(timeline);

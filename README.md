@@ -32,6 +32,7 @@ To enable deployment:
 | Trial | Plugin | Input type captured |
 |-------|--------|---------------------|
 | Instructions | `plugin-instructions` | `mouse.click` (Next / Previous buttons) |
+| Enter fullscreen | `plugin-fullscreen` | `fullscreenchange` (enter) |
 | Fixation cross | `plugin-html-keyboard-response` | `key.down` / `key.up` (Space) |
 | Stroop task (×3) | `plugin-html-keyboard-response` | `key.down` / `key.up` (R / G / B) |
 | Mood rating | `plugin-html-button-response` | `mouse.click` on buttons |
@@ -40,6 +41,7 @@ To enable deployment:
 | Sketchpad | `plugin-sketchpad` | `mouse.down` / `mouse.move` / `mouse.up` (freehand drawing) |
 | Free sort | `plugin-free-sort` | `mouse.down` / `mouse.move` / `mouse.up` (drag & drop) |
 | Text survey | `plugin-survey-text` | `key.down` / `key.up` (text typing) |
+| Exit fullscreen | `plugin-fullscreen` | `fullscreenchange` (exit) |
 
 ## Session recording
 
