@@ -40,6 +40,7 @@ To enable deployment:
 | Canvas stimulus | `plugin-canvas-keyboard-response` | Canvas `dom` snapshot + `key.down` / `key.up` |
 | Sketchpad | `plugin-sketchpad` | `mouse.down` / `mouse.move` / `mouse.up` (freehand drawing) |
 | Free sort | `plugin-free-sort` | `mouse.down` / `mouse.move` / `mouse.up` (drag & drop) |
+| Long multi-choice survey | `plugin-survey-multi-choice` | `mouse.click` (radio buttons) + `scroll` (page is taller than viewport) |
 | Text survey | `plugin-survey-text` | `key.down` / `key.up` (text typing) |
 | Exit fullscreen | `plugin-fullscreen` | `fullscreenchange` (exit) |
 
@@ -65,5 +66,5 @@ The recording is also stored at `window._sessionRecording` for inspection in the
 All jsPsych files are loaded via [jsDelivr](https://www.jsdelivr.com/) pointing to the `preview/pr-3661` branch of the jsPsych repository, which contains the pre-built dist files for the recording feature:
 
 ```
-https://cdn.jsdelivr.net/gh/jspsych/jsPsych@51aadba8de0ecad375c3095594c5979cfafdac20/packages/...
+https://cdn.jsdelivr.net/gh/jspsych/jsPsych@73af92b0d2289ce6e780225cea7f7f4b9b6a9154/packages/...
 ```

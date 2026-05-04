@@ -6,19 +6,20 @@
   <title>jsPsych Replay Test Demo</title>
 
   <!-- jsPsych core + plugins via jsDelivr (preview/pr-3661 branch — includes record_session feature) -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@51aadba8de0ecad375c3095594c5979cfafdac20/packages/jspsych/css/jspsych.css" />
-  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@51aadba8de0ecad375c3095594c5979cfafdac20/packages/jspsych/dist/index.browser.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@73af92b0d2289ce6e780225cea7f7f4b9b6a9154/packages/jspsych/css/jspsych.css" />
+  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@73af92b0d2289ce6e780225cea7f7f4b9b6a9154/packages/jspsych/dist/index.browser.min.js"></script>
 
   <!-- Plugins -->
-  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@51aadba8de0ecad375c3095594c5979cfafdac20/packages/plugin-instructions/dist/index.browser.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@51aadba8de0ecad375c3095594c5979cfafdac20/packages/plugin-html-keyboard-response/dist/index.browser.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@51aadba8de0ecad375c3095594c5979cfafdac20/packages/plugin-html-button-response/dist/index.browser.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@51aadba8de0ecad375c3095594c5979cfafdac20/packages/plugin-html-slider-response/dist/index.browser.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@51aadba8de0ecad375c3095594c5979cfafdac20/packages/plugin-canvas-keyboard-response/dist/index.browser.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@51aadba8de0ecad375c3095594c5979cfafdac20/packages/plugin-sketchpad/dist/index.browser.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@51aadba8de0ecad375c3095594c5979cfafdac20/packages/plugin-free-sort/dist/index.browser.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@51aadba8de0ecad375c3095594c5979cfafdac20/packages/plugin-survey-text/dist/index.browser.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@51aadba8de0ecad375c3095594c5979cfafdac20/packages/plugin-fullscreen/dist/index.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@73af92b0d2289ce6e780225cea7f7f4b9b6a9154/packages/plugin-instructions/dist/index.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@73af92b0d2289ce6e780225cea7f7f4b9b6a9154/packages/plugin-html-keyboard-response/dist/index.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@73af92b0d2289ce6e780225cea7f7f4b9b6a9154/packages/plugin-html-button-response/dist/index.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@73af92b0d2289ce6e780225cea7f7f4b9b6a9154/packages/plugin-html-slider-response/dist/index.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@73af92b0d2289ce6e780225cea7f7f4b9b6a9154/packages/plugin-canvas-keyboard-response/dist/index.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@73af92b0d2289ce6e780225cea7f7f4b9b6a9154/packages/plugin-sketchpad/dist/index.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@73af92b0d2289ce6e780225cea7f7f4b9b6a9154/packages/plugin-free-sort/dist/index.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@73af92b0d2289ce6e780225cea7f7f4b9b6a9154/packages/plugin-survey-text/dist/index.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@73af92b0d2289ce6e780225cea7f7f4b9b6a9154/packages/plugin-survey-multi-choice/dist/index.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@73af92b0d2289ce6e780225cea7f7f4b9b6a9154/packages/plugin-fullscreen/dist/index.browser.min.js"></script>
 
   <style>
     /* Stroop stimulus helper */
@@ -86,14 +87,17 @@ const instructions = {
 
     `<h2>What you will do</h2>
      <ol style="text-align:left;max-width:480px;margin:auto">
+       <li>Switch the experiment into fullscreen mode</li>
        <li>Press a key in response to a fixation cross</li>
        <li>Identify the ink colour of a word (Stroop task)</li>
        <li>Answer a multiple-choice question using buttons</li>
        <li>Rate your confidence using a slider</li>
-       <li>React to a canvas-drawn shape</li>
+       <li>Indicate which side of a canvas a circle appears on</li>
        <li>Draw freely on a sketchpad</li>
        <li>Drag and drop coloured tiles to organise them</li>
+       <li>Answer a longer multiple-choice survey (you'll need to scroll)</li>
        <li>Type answers to short text questions</li>
+       <li>Exit fullscreen mode</li>
      </ol>`,
 
     `<h2>Ready?</h2>
@@ -254,6 +258,43 @@ const freeSort = {
 };
 
 // ============================================================
+// TRIAL 8b – Long multi-choice survey (radio clicks + page scroll)
+// ============================================================
+const surveyMultiChoice = {
+  type: jsPsychSurveyMultiChoice,
+  preamble: `<p style="text-align:center;font-size:1.1rem">
+               Tell us about your experience. Scroll down to see all the questions before submitting.
+             </p>`,
+  questions: [
+    { prompt: "Which device are you using right now?", name: "device",
+      options: ["Laptop", "Desktop", "Tablet", "Phone", "Other"], required: true },
+    { prompt: "Which browser do you usually prefer?", name: "browser",
+      options: ["Chrome", "Firefox", "Safari", "Edge", "Other"], required: true },
+    { prompt: "How often do you participate in online experiments?", name: "frequency",
+      options: ["Never before", "Rarely", "Occasionally", "Often", "Very often"], required: true },
+    { prompt: "How would you rate the visual design of this demo so far?", name: "design",
+      options: ["Poor", "Fair", "Good", "Very good", "Excellent"], required: true },
+    { prompt: "How clear were the instructions?", name: "clarity",
+      options: ["Very unclear", "Unclear", "Neutral", "Clear", "Very clear"], required: true },
+    { prompt: "Was the pace of the demo comfortable?", name: "pace",
+      options: ["Too slow", "Slightly slow", "Just right", "Slightly fast", "Too fast"], required: true },
+    { prompt: "Which trial did you find most engaging?", name: "favorite",
+      options: ["Stroop task", "Mood rating", "Confidence slider", "Canvas circle", "Sketchpad", "Free sort"], required: true },
+    { prompt: "Which trial did you find most difficult?", name: "difficult",
+      options: ["Stroop task", "Mood rating", "Confidence slider", "Canvas circle", "Sketchpad", "Free sort"], required: true },
+    { prompt: "How responsive did the interactions feel?", name: "responsive",
+      options: ["Very sluggish", "Sluggish", "Acceptable", "Snappy", "Very snappy"], required: true },
+    { prompt: "How comfortable was fullscreen mode for you?", name: "fullscreen",
+      options: ["Very uncomfortable", "Uncomfortable", "Neutral", "Comfortable", "Very comfortable"], required: true },
+    { prompt: "Did anything in the demo feel buggy or unexpected?", name: "bugs",
+      options: ["Nothing felt off", "Minor glitches", "A few notable issues", "Major problems"], required: true },
+    { prompt: "Would you like to participate in similar studies again?", name: "again",
+      options: ["Definitely not", "Probably not", "Maybe", "Probably yes", "Definitely yes"], required: true },
+  ],
+  button_label: "Continue",
+};
+
+// ============================================================
 // TRIAL 9 – Survey text (keyboard text input + clipboard)
 // ============================================================
 const surveyText = {
@@ -304,6 +345,7 @@ const timeline = [
   canvasTrial,
   sketchpad,
   freeSort,
+  surveyMultiChoice,
   surveyText,
   exitFullscreen,
 ];
