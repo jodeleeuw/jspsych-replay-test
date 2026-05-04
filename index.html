@@ -6,20 +6,20 @@
   <title>jsPsych Replay Test Demo</title>
 
   <!-- jsPsych core + plugins via jsDelivr (preview/pr-3661 branch — includes record_session feature) -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@73af92b0d2289ce6e780225cea7f7f4b9b6a9154/packages/jspsych/css/jspsych.css" />
-  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@73af92b0d2289ce6e780225cea7f7f4b9b6a9154/packages/jspsych/dist/index.browser.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@4706a5e751c572c09a44a1b9a60d910e0c251d4a/packages/jspsych/css/jspsych.css" />
+  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@4706a5e751c572c09a44a1b9a60d910e0c251d4a/packages/jspsych/dist/index.browser.min.js"></script>
 
   <!-- Plugins -->
-  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@73af92b0d2289ce6e780225cea7f7f4b9b6a9154/packages/plugin-instructions/dist/index.browser.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@73af92b0d2289ce6e780225cea7f7f4b9b6a9154/packages/plugin-html-keyboard-response/dist/index.browser.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@73af92b0d2289ce6e780225cea7f7f4b9b6a9154/packages/plugin-html-button-response/dist/index.browser.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@73af92b0d2289ce6e780225cea7f7f4b9b6a9154/packages/plugin-html-slider-response/dist/index.browser.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@73af92b0d2289ce6e780225cea7f7f4b9b6a9154/packages/plugin-canvas-keyboard-response/dist/index.browser.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@73af92b0d2289ce6e780225cea7f7f4b9b6a9154/packages/plugin-sketchpad/dist/index.browser.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@73af92b0d2289ce6e780225cea7f7f4b9b6a9154/packages/plugin-free-sort/dist/index.browser.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@73af92b0d2289ce6e780225cea7f7f4b9b6a9154/packages/plugin-survey-text/dist/index.browser.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@73af92b0d2289ce6e780225cea7f7f4b9b6a9154/packages/plugin-survey-multi-choice/dist/index.browser.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@73af92b0d2289ce6e780225cea7f7f4b9b6a9154/packages/plugin-fullscreen/dist/index.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@4706a5e751c572c09a44a1b9a60d910e0c251d4a/packages/plugin-instructions/dist/index.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@4706a5e751c572c09a44a1b9a60d910e0c251d4a/packages/plugin-html-keyboard-response/dist/index.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@4706a5e751c572c09a44a1b9a60d910e0c251d4a/packages/plugin-html-button-response/dist/index.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@4706a5e751c572c09a44a1b9a60d910e0c251d4a/packages/plugin-html-slider-response/dist/index.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@4706a5e751c572c09a44a1b9a60d910e0c251d4a/packages/plugin-canvas-keyboard-response/dist/index.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@4706a5e751c572c09a44a1b9a60d910e0c251d4a/packages/plugin-sketchpad/dist/index.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@4706a5e751c572c09a44a1b9a60d910e0c251d4a/packages/plugin-free-sort/dist/index.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@4706a5e751c572c09a44a1b9a60d910e0c251d4a/packages/plugin-survey-text/dist/index.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@4706a5e751c572c09a44a1b9a60d910e0c251d4a/packages/plugin-survey-multi-choice/dist/index.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/jspsych/jsPsych@4706a5e751c572c09a44a1b9a60d910e0c251d4a/packages/plugin-fullscreen/dist/index.browser.min.js"></script>
 
   <style>
     /* Stroop stimulus helper */
@@ -372,26 +372,42 @@ function showRecording() {
 
   document.body.innerHTML = `
     <div style="text-align:center;padding:3rem;font-family:sans-serif">
-      <button id="download-btn" style="font-size:1.1rem;padding:0.75rem 1.5rem;cursor:pointer">
+      <button id="download-btn" style="font-size:1.1rem;padding:0.75rem 1.5rem;cursor:pointer;margin:0 0.5rem">
         Download JSON
+      </button>
+      <button id="download-gz-btn" style="font-size:1.1rem;padding:0.75rem 1.5rem;cursor:pointer;margin:0 0.5rem">
+        Download gzip
       </button>
     </div>
   `;
   document.getElementById("download-btn").addEventListener("click", downloadRecording);
+  document.getElementById("download-gz-btn").addEventListener("click", downloadRecordingGzip);
+}
+
+function triggerDownload(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function timestampSlug() {
+  return new Date().toISOString().replace(/[:.]/g, "-");
 }
 
 function downloadRecording() {
   const json = JSON.stringify(window._sessionRecording, null, 2);
   const blob = new Blob([json], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `jspsych-session-recording-${timestamp}.json`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  triggerDownload(blob, `jspsych-session-recording-${timestampSlug()}.json`);
+}
+
+async function downloadRecordingGzip() {
+  const blob = await jsPsych.getSessionRecordingCompressed();
+  triggerDownload(blob, `jspsych-session-recording-${timestampSlug()}.json.gz`);
 }
 </script>
 </body>

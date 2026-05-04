@@ -66,5 +66,5 @@ The recording is also stored at `window._sessionRecording` for inspection in the
 All jsPsych files are loaded via [jsDelivr](https://www.jsdelivr.com/) pointing to the `preview/pr-3661` branch of the jsPsych repository, which contains the pre-built dist files for the recording feature:
 
 ```
-https://cdn.jsdelivr.net/gh/jspsych/jsPsych@73af92b0d2289ce6e780225cea7f7f4b9b6a9154/packages/...
+https://cdn.jsdelivr.net/gh/jspsych/jsPsych@4706a5e751c572c09a44a1b9a60d910e0c251d4a/packages/...
 ```
